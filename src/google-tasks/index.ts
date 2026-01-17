@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 
-import { Task, FormattedTask } from './types.js';
-export { Task, FormattedTask } from './types.js';
+import type { Task, FormattedTask } from './types.js';
+export type { Task, FormattedTask } from './types.js';
 
 
 

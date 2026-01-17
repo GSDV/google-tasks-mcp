@@ -14,7 +14,7 @@ This is a simple MCP for working with Google Tasks. Agents will be able to run C
 ## Setup
 1. Make a new project in [Google Cloud](https://console.cloud.google.com)
     - Once made, search for the Google Tasks API and enable it.
-    - Publish this new project, do not leave it in testing. Ignore Google's warnings.
+    - Publish this new project, do not leave it in testing. Ignore Google's warnings. This is needed to allow indefinite refresh tokens in step 3.
 
 2. Make new OAuth 2.0 Client ID [here](https://console.cloud.google.com/apis/credentials)
     - Make it a web appplication type.
@@ -31,4 +31,4 @@ This is a simple MCP for working with Google Tasks. Agents will be able to run C
 4. Create a secret key for MCP_API_KEY
     - You must give this same key to all agents that access this MCP.
 
-5. Find a hosting provider to deploy, like onrender
+5. Find a hosting provider to deploy, like on Render
