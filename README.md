@@ -40,4 +40,5 @@ This is a simple MCP for working with Google Tasks. Agents will be able to run C
 4. Create a secret key for MCP_API_KEY
     - You must give this same key to all agents that access this MCP.
 
-5. Find a hosting provider to deploy, like on Render
+5. Find a hosting provider to deploy, like on Render or Vercel
+    - This may require a hosting provider specific file.
