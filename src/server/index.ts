@@ -1,10 +1,33 @@
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 
 import { server } from './mcp.js';
 
 
+
+const MCP_API_KEY = process.env.MCP_API_KEY;
+
+function authMiddleware(req: Request, res: Response, next: NextFunction) {
+    if (!MCP_API_KEY) {
+        console.warn('MCP_API_KEY not set (anyone is able to access this MCP) - authentication disabled.');
+        return next();
+    }
+
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        res.status(401).json({ error: 'Missing or invalid Authorization header.' });
+        return;
+    }
+
+    const token = authHeader.slice(7);
+    if (token !== MCP_API_KEY) {
+        res.status(401).json({ error: 'Invalid API key.' });
+        return;
+    }
+
+    next();
+}
 
 export const app = express();
 app.use(express.json());
@@ -24,7 +47,7 @@ app.get('/', (_req: Request, res: Response) => {
 
 
 
-app.all('/mcp', async (req: Request, res: Response) => {
+app.all('/mcp', authMiddleware, async (req: Request, res: Response) => {
     const transport = new StreamableHTTPServerTransport({
         sessionIdGenerator: undefined,
     });
