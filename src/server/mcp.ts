@@ -4,6 +4,7 @@ import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 
 import {
     tasksApi,
+    getTaskLists,
     getDefaultTaskListId,
     getTasks,
     isDueTodayOrOverdue,
@@ -23,6 +24,7 @@ export const server = new McpServer({
 
 const toolContext: ToolContext = {
     tasksApi,
+    getTaskLists,
     getDefaultTaskListId,
     getTasks,
     formatTask,

@@ -11,18 +11,20 @@ interface CreateTaskInput {
     title: string;
     notes?: string;
     due?: string;
+    task_list_id?: string;
 }
 
 const inputSchema = {
     title: z.string().describe('Title of the new task.'),
     notes: z.string().optional().describe('Notes/description for the task.'),
-    due: z.string().optional().describe('Due date in RFC 3339 format (e.g., 2024-12-25T00:00:00Z).')
+    due: z.string().optional().describe('Due date in RFC 3339 format (e.g., 2024-12-25T00:00:00Z).'),
+    task_list_id: z.string().optional().describe('The ID of the task list to create the task in. If not provided, uses the default task list.')
 };
 
 
 
 async function handler(ctx: ToolContext, input: CreateTaskInput) {
-    const listId = await ctx.getDefaultTaskListId();
+    const listId = input.task_list_id || await ctx.getDefaultTaskListId();
 
     const newTask: Task = { title: input.title };
     if (input.notes) newTask.notes = input.notes;

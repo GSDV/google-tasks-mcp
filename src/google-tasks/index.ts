@@ -1,7 +1,7 @@
 import { google } from 'googleapis';
 
-import type { Task, FormattedTask } from './types.js';
-export type { Task, FormattedTask } from './types.js';
+import type { Task, FormattedTask, TaskList } from './types.js';
+export type { Task, FormattedTask, TaskList } from './types.js';
 
 
 
@@ -17,6 +17,11 @@ oauth2Client.setCredentials({
 export const tasksApi = google.tasks({ version: "v1", auth: oauth2Client });
 
 
+
+export async function getTaskLists(): Promise<TaskList[]> {
+    const response = await tasksApi.tasklists.list({ maxResults: 100 });
+    return response.data.items || [];
+}
 
 export async function getDefaultTaskListId() {
     const response = await tasksApi.tasklists.list({ maxResults: 1 });

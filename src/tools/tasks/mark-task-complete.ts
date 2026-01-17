@@ -8,16 +8,18 @@ import { withErrorHandling } from '../utils/with-error-handling.js';
 
 interface MarkTaskCompleteInput {
     task_id: string;
+    task_list_id?: string;
 }
 
 const inputSchema = {
-    task_id: z.string().describe('The ID of the task to mark as complete.')
+    task_id: z.string().describe('The ID of the task to mark as complete.'),
+    task_list_id: z.string().optional().describe('The ID of the task list containing the task. If not provided, uses the default task list.')
 };
 
 
 
 async function handler(ctx: ToolContext, input: MarkTaskCompleteInput) {
-    const listId = await ctx.getDefaultTaskListId();
+    const listId = input.task_list_id || await ctx.getDefaultTaskListId();
 
     const response = await ctx.tasksApi.tasks.patch({
         tasklist: listId,

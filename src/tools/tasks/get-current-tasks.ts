@@ -1,3 +1,5 @@
+import { z } from 'zod';
+
 import { ToolDefinition, ToolContext } from '../types.js';
 import { createSuccessResponse } from '../utils/response-builders.js';
 import { withErrorHandling } from '../utils/with-error-handling.js';
@@ -5,8 +7,18 @@ import { Task } from '../../google-tasks/types.js';
 
 
 
-async function handler(ctx: ToolContext) {
-    const listId = await ctx.getDefaultTaskListId();
+interface GetCurrentTasksInput {
+    task_list_id?: string;
+}
+
+const inputSchema = {
+    task_list_id: z.string().optional().describe('The ID of the task list to retrieve tasks from. If not provided, uses the default task list.')
+};
+
+
+
+async function handler(ctx: ToolContext, input: GetCurrentTasksInput) {
+    const listId = input.task_list_id || await ctx.getDefaultTaskListId();
     const allTasks = await ctx.getTasks(listId, false);
 
     const relevantTasks = allTasks.filter((task) => {
@@ -52,11 +64,12 @@ async function handler(ctx: ToolContext) {
 
 
 
-export const getCurrentTasks: ToolDefinition = {
+export const getCurrentTasks: ToolDefinition<GetCurrentTasksInput> = {
     name: 'get_current_tasks',
     config: {
         title: 'Get Current Tasks',
-        description: 'Retrieve all tasks that are due today or overdue, as well as tasks with no due date.'
+        description: 'Retrieve all tasks that are due today or overdue, as well as tasks with no due date.',
+        inputSchema
     },
     handler: withErrorHandling('get current tasks', handler)
 };

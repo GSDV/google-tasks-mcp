@@ -13,6 +13,7 @@ interface EditTaskInput {
     notes?: string;
     due?: string;
     status?: 'needsAction' | 'completed';
+    task_list_id?: string;
 }
 
 const inputSchema = {
@@ -20,13 +21,14 @@ const inputSchema = {
     title: z.string().optional().describe('New title for the task.'),
     notes: z.string().optional().describe('New notes/description for the task.'),
     due: z.string().optional().describe('New due date in RFC 3339 format (e.g., 2024-12-25T00:00:00Z).'),
-    status: z.enum(['needsAction', 'completed']).optional().describe('New status: "needsAction" or "completed".')
+    status: z.enum(['needsAction', 'completed']).optional().describe('New status: "needsAction" or "completed".'),
+    task_list_id: z.string().optional().describe('The ID of the task list containing the task. If not provided, uses the default task list.')
 };
 
 
 
 async function handler(ctx: ToolContext, input: EditTaskInput) {
-    const listId = await ctx.getDefaultTaskListId();
+    const listId = input.task_list_id || await ctx.getDefaultTaskListId();
 
     const updateBody: Task = {};
     if (input.title !== undefined) updateBody.title = input.title;
