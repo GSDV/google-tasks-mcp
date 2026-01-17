@@ -1,4 +1,4 @@
-import packageJson from '@/package.json' with { type: 'json' };
+import packageJson from '../../package.json' with { type: 'json' };
 
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { z } from 'zod';
@@ -10,7 +10,7 @@ import {
     isDueTodayOrOverdue,
     formatTask,
     Task
-} from '@/src/google-tasks/index.js';
+} from '../google-tasks/index.js';
 
 
 
