@@ -2,6 +2,15 @@
 
 This is a simple MCP for working with Google Tasks. Agents will be able to run CRUD actions on your tasks. The MCP also exposes helpful functions such as getting all current + outdated tasks.
 
+<p align="center">
+    <img
+        src="assets/banner.png"
+        alt="Banner"
+        style="width: 100%; height: auto; max-height: 450px; object-fit: contain;"
+    />
+</p>
+
+
 ## Tools
 
 | Tool | Description |
